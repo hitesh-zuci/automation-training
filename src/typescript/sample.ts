@@ -70,7 +70,22 @@ enum browser {
   sa = "safari",
 }
 let select: browser = browser.br;
-console.log(select);
+// console.log(select);
 // value(23);
 // console.log(emp1);
 // console.log(age);
+
+//classes
+
+class session {
+  name: string;
+  status: boolean;
+  constructor(name: string, isactvie: boolean) {
+    this.name = name;
+    this.status = isactvie;
+  }
+}
+
+let br = new session("brave", true);
+let s = new session("safari", false);
+console.log(br.status);
