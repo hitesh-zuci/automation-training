@@ -3,11 +3,12 @@ import { expect, $ } from "@wdio/globals";
 
 import LoginPage from "../pageobjects/login.page.js";
 import SecurePage from "../pageobjects/secure.page.js";
-import Window from "../pageobjects/test.js";
+import Alerts from "../pageobjects/test.js";
 const pages = {
   // login: LoginPage,
   // home: test,
-  window: Window,
+  // window: Window,
+  alerts: Alerts,
 };
 let wn: string[];
 //login
@@ -47,23 +48,41 @@ let wn: string[];
 // });
 
 //windows
+// Given(/^I am on the (\w+) page$/, async (page: keyof typeof pages) => {
+//   await pages[page].open();
+// });
+
+// When(/^I click the ch link$/, async () => {
+//   await Window.ch();
+//   wn = await browser.getWindowHandles();
+// });
+
+// Then(/^I should be on the new window$/, async () => {
+//   await browser.switchToWindow(wn[1]);
+//   const hding = await $("h3").getText();
+//   await expect(hding).toBe("New Window");
+// });
+// When(/^I switch back$/, async () => {
+//   await browser.switchToWindow(wn[0]);
+// });
+// Then(/^I should return to window page$/, async () => {
+//   await expect(browser).toHaveUrl("https://the-internet.herokuapp.com/windows");
+// });
+
+//alerts
 Given(/^I am on the (\w+) page$/, async (page: keyof typeof pages) => {
   await pages[page].open();
 });
-
-When(/^I click the ch link$/, async () => {
-  await Window.ch();
-  wn = await browser.getWindowHandles();
+When(/^I click the jsconfirm link$/, async () => {
+  browser.on("dialog", () => {});
+  await $("button=Click for JS Confirm").click();
 });
-
-Then(/^I should be on the new window$/, async () => {
-  await browser.switchToWindow(wn[1]);
-  const hding = await $("h3").getText();
-  await expect(hding).toBe("New Window");
+Then(/^I should get alert text and i should cancel it$/, async () => {
+  const message = await browser.getAlertText();
+  await expect(message).toBe("I am a JS Confirm");
+  await browser.dismissAlert();
 });
-When(/^I switch back$/, async () => {
-  await browser.switchToWindow(wn[0]);
-});
-Then(/^I should return to window page$/, async () => {
-  await expect(browser).toHaveUrl("https://the-internet.herokuapp.com/windows");
+Then(/^I should get cancel message$/, async () => {
+  const message = await $("#result").getText();
+  await expect(message).toBe("You clicked: Cancel");
 });

@@ -24,4 +24,11 @@ class Window extends Page {
     return super.open("windows");
   }
 }
-export default new Window();
+
+class Alerts extends Page {
+  public open() {
+    return super.open("javascript_alerts");
+  }
+}
+
+export default new Alerts();
