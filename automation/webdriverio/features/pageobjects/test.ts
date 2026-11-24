@@ -30,5 +30,57 @@ class Alerts extends Page {
     return super.open("javascript_alerts");
   }
 }
+class Dropdown extends Page {
+  public open() {
+    return super.open("dropdown");
+  }
+}
+class DynCon extends Page {
+  public open() {
+    return super.open("dynamic_controls");
+  }
+  public async removecheckbox() {
+    await this.checkboxButton.click();
+    await this.checkbox.waitForDisplayed({
+      reverse: true,
+      timeout: 10000
+    });
+  }
+  public async addcheckbox() {
+    await this.checkboxButton.click();
+    await this.checkbox.waitForDisplayed({
+      timeout: 10000
+    });
+  }
+  public async enableinput() {
+    await this.inputButton.click();
+    await this.inputField.waitForEnabled({
+      timeout: 10000
+    });
+  }
+  public async disableinput() {
+    await this.inputButton.click();
+    await this.inputField.waitForEnabled({
+      reverse: true,
+      timeout: 10000
+    });
+  }
 
-export default new Alerts();
+
+  public get checkbox() {
+    return $("#checkbox");
+  }
+
+  public get checkboxButton() {
+    return $("#checkbox-example button");
+  }
+
+  public get inputField() {
+    return $("#input-example input");
+  }
+
+  public get inputButton() {
+    return $("#input-example button");
+  }
+}
+export default new DynCon();

@@ -1,15 +1,16 @@
 import { expect, $ } from "@wdio/globals";
-import {Given, When, Then, Before, After} from "@wdio/cucumber-framework";
+import { Given, When, Then, Before, After } from "@wdio/cucumber-framework";
 import LoginPage from "../pageobjects/login.page.js";
 import SecurePage from "../pageobjects/secure.page.js";
-import Alerts from "../pageobjects/test.js";
+import Dyncon from "../pageobjects/test.js";
 import { after } from "node:test";
 import { CustomWorld } from "../support/world.js";
+import { asyncWrapProviders } from "node:async_hooks";
 const pages = {
-  // login: LoginPage,
-  // home: test,
-  // window: Window,
-  alerts: Alerts,
+    // login: LoginPage,
+    // home: test,
+    // window: Window,
+    //   alerts: Alerts,
 };
 let wn: string[];
 //login
@@ -89,11 +90,11 @@ let wn: string[];
 // });
 
 //hooks
-Before(async()=>{
-  console.log("scenario is starting");
+Before(async () => {
+    console.log("scenario is starting");
 });
-After(async()=>{
-  console.log("Scenario has finished");
+After(async () => {
+    console.log("Scenario has finished");
 });
 
 //world class
@@ -127,4 +128,56 @@ Then("I should see {string}", async (expectedMessage: string) => {
     await expect(SecurePage.flashAlert).toHaveText(
         expect.stringContaining(expectedMessage)
     );
+});
+
+//table
+When("I read these users:", function (datatable) {
+    const d = datatable.hashes();
+    for (const i of d) {
+        console.log(i.username)
+    }
+})
+
+//dropdown
+Given("I am on the dropdown page", async () => {
+    await Dropdown.open();
+})
+
+When("I select option1", async () => {
+    await $("#dropdown").selectByVisibleText("Option 1");
+});
+Then("I should confirm option1 is selected", async () => {
+    const c = await $("#dropdown").getValue();
+
+    await expect(c).toBe("1");
+
+});
+
+//dynamic controls
+Given ("I am on the dynamic controls page",async()=>{
+    await Dyncon.open();
+});
+When ("I remove the checkbox",async()=>{
+    await Dyncon.removecheckbox();
+});
+Then("the checkbox should disappear", async () => {
+  await expect(Dyncon.checkbox).not.toBeDisplayed();
+});
+When ("I add the checkbox",async()=>{
+    await Dyncon.addcheckbox();
+});
+Then("the checkbox should appear", async () => {
+  await expect(Dyncon.checkbox).toBeDisplayed();
+});
+When ("I enable the input",async()=>{
+    await Dyncon.enableinput();
+});
+Then("the input should be enabled", async () => {
+  await expect(Dyncon.inputField).toBeEnabled();
+});
+When ("I disable the input",async()=>{
+    await Dyncon.disableinput();
+});
+Then("the input should be disabled", async () => {
+  await expect(Dyncon.inputField).not.toBeEnabled();
 });

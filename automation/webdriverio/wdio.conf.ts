@@ -155,7 +155,7 @@ export const config: WebdriverIO.Config = {
         // <boolean> fail the run on a pending step
         strict: true,
         // <string> (expression) only execute the features or scenarios with tags matching the expression
-        tags: '@smoke',
+        tags: '',
         // <number> timeout for step definitions
         timeout: 60000,
         // <boolean> Enable this config to treat undefined definitions as warnings.
