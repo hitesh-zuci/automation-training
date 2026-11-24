@@ -1,12 +1,19 @@
-Feature: The Internet Guinea Pig Website
+Feature: Login data-driven testing
 
-  Scenario Outline: As a user, I can log into the secure area
-
+  @smoke
+  Scenario: Successful login
     Given I am on the login page
-    When I login with <username> and <password>
-    Then I should see a flash message saying <message>
+    When I login with "tomsmith" and "SuperSecretPassword!"
+    Then I should see "You logged into a secure area!"
 
-    Examples:
-      | username | password             | message                        |
-      | tomsmith | SuperSecretPassword! | You logged into a secure area! |
-      | foobar   | barfoo               | Your username is invalid!      |
+  @regression
+  Scenario: Invalid username
+    Given I am on the login page
+    When I login with "invalid" and "wrong123"
+    Then I should see "Your username is invalid!"
+
+  @regression
+  Scenario: Invalid password
+    Given I am on the login page
+    When I login with "tomsmith" and "wrong123"
+    Then I should see "Your password is invalid!"

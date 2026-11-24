@@ -1,9 +1,10 @@
-import { Given, When, Then } from "@wdio/cucumber-framework";
 import { expect, $ } from "@wdio/globals";
-
+import {Given, When, Then, Before, After} from "@wdio/cucumber-framework";
 import LoginPage from "../pageobjects/login.page.js";
 import SecurePage from "../pageobjects/secure.page.js";
 import Alerts from "../pageobjects/test.js";
+import { after } from "node:test";
+import { CustomWorld } from "../support/world.js";
 const pages = {
   // login: LoginPage,
   // home: test,
@@ -70,19 +71,60 @@ let wn: string[];
 // });
 
 //alerts
-Given(/^I am on the (\w+) page$/, async (page: keyof typeof pages) => {
-  await pages[page].open();
+// Given(/^I am on the (\w+) page$/, async (page: keyof typeof pages) => {
+//   await pages[page].open();
+// });
+// When(/^I click the jsconfirm link$/, async () => {
+//   browser.on("dialog", () => {});
+//   await $("button=Click for JS Confirm").click();
+// });
+// Then(/^I should get alert text and i should cancel it$/, async () => {
+//   const message = await browser.getAlertText();
+//   await expect(message).toBe("I am a JS Confirm");
+//   await browser.dismissAlert();
+// });
+// Then(/^I should get cancel message$/, async () => {
+//   const message = await $("#result").getText();
+//   await expect(message).toBe("You clicked: Cancel");
+// });
+
+//hooks
+Before(async()=>{
+  console.log("scenario is starting");
 });
-When(/^I click the jsconfirm link$/, async () => {
-  browser.on("dialog", () => {});
-  await $("button=Click for JS Confirm").click();
+After(async()=>{
+  console.log("Scenario has finished");
 });
-Then(/^I should get alert text and i should cancel it$/, async () => {
-  const message = await browser.getAlertText();
-  await expect(message).toBe("I am a JS Confirm");
-  await browser.dismissAlert();
+
+//world class
+Given("I store a username", function (this: CustomWorld) {
+    this.username = "testuser";
 });
-Then(/^I should get cancel message$/, async () => {
-  const message = await $("#result").getText();
-  await expect(message).toBe("You clicked: Cancel");
+
+When("I retrieve the stored username", function (this: CustomWorld) {
+    console.log("Stored username:", this.username);
+});
+
+Then("the username should be {string}", function (this: CustomWorld, expectedUsername: string) {
+    expect(this.username).toBe(expectedUsername);
+});
+
+//login outline
+Given("I am on the login page", async () => {
+    await LoginPage.open();
+});
+
+When(
+    "I login with {string} and {string}",
+    async (username: string, password: string) => {
+        await LoginPage.login(username, password);
+    }
+);
+
+Then("I should see {string}", async (expectedMessage: string) => {
+    await expect(SecurePage.flashAlert).toBeDisplayed();
+
+    await expect(SecurePage.flashAlert).toHaveText(
+        expect.stringContaining(expectedMessage)
+    );
 });
