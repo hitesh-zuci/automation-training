@@ -1,8 +1,8 @@
 import { expect, $ } from "@wdio/globals";
 import { Given, When, Then, Before, After } from "@wdio/cucumber-framework";
-import LoginPage from "../pageobjects/login.page.js";
-import SecurePage from "../pageobjects/secure.page.js";
-import Dyncon from "../pageobjects/test.js";
+import LoginPage from "../../pageobjects/login.page.js";
+import SecurePage from "../../pageobjects/secure.page.js";
+import Dyncon from "../../pageobjects/test.js";
 import { after } from "node:test";
 import { CustomWorld } from "../support/world.js";
 import { asyncWrapProviders } from "node:async_hooks";

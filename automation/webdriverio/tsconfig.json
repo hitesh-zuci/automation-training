@@ -28,5 +28,5 @@
         "features",
         "wdio.conf.ts",
         "features"
-    ]
+, "pageobjects", "utils"    ]
 }

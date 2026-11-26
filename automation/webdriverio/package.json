@@ -13,5 +13,8 @@
   },
   "scripts": {
     "wdio": "wdio run ./wdio.conf.ts"
+  },
+  "dependencies": {
+    "yaml": "^2.9.1"
   }
 }
