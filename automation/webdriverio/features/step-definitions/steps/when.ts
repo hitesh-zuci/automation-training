@@ -1,10 +1,11 @@
 import { When } from "@wdio/cucumber-framework";
 import { $ } from "@wdio/globals";
 import LoginPage from "../../../pageobjects/login.page.js";
-import Dyncon from "../../../pageobjects/test.js";
 import { CustomWorld } from "../../support/world.js";
 import Dropdown from "../../../pageobjects/dropdown.js";
-// Login
+import Dyncon from "../../../pageobjects/dyncontrols.js"
+import Dragdrop from "../../../pageobjects/dragdrop.js";
+//Login
 When(
     "I login with {string} and {string}",
     async (username: string, password: string) => {
@@ -12,12 +13,12 @@ When(
     }
 );
 
-// World
+//World
 When("I retrieve the stored username", function (this: CustomWorld) {
     console.log("Stored username:", this.username);
 });
 
-// Data Table
+//Data Table
 When("I read these users:", function (datatable) {
     const users = datatable.hashes();
 
@@ -26,24 +27,25 @@ When("I read these users:", function (datatable) {
     }
 });
 
-// Dropdown
-When("I select option1", async () => {
-    return Dropdown.selectop();
-});
+//Dropdown
+When("I select option1", () =>Dropdown.selectop());
 
-// Dynamic Controls
+//Dynamic Controls
 When("I remove the checkbox", async () => {
-    await Dyncon.removecheckbox();
+    return Dyncon.removecheckbox();
 });
 
 When("I add the checkbox", async () => {
-    await Dyncon.addcheckbox();
+    return Dyncon.addcheckbox();
 });
 
 When("I enable the input", async () => {
-    await Dyncon.enableinput();
+    return Dyncon.enableinput();
 });
 
 When("I disable the input", async () => {
-    await Dyncon.disableinput();
+    return Dyncon.disableinput();
 });
+
+//drag and drop
+When("I drag A over B",()=>Dragdrop.dragdrop());

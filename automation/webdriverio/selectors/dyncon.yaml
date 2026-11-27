@@ -1,0 +1,4 @@
+cb: "#checkbox"
+cbbutton: "#checkbox-example button"
+ip: "#input-example input"
+ipbutton: "#input-example button"

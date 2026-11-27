@@ -1,11 +1,12 @@
 import { Then } from "@wdio/cucumber-framework";
 import { expect } from "@wdio/globals";
 import SecurePage from "../../../pageobjects/secure.page.js";
-import Dyncon from "../../../pageobjects/test.js";
 import { CustomWorld } from "../../support/world.js";
 import { $ } from "@wdio/globals";
 import Dropdown from "../../../pageobjects/dropdown.js";
-// World
+import Dyncon from "../../../pageobjects/dyncontrols.js";
+import Dragdrop from "../../../pageobjects/dragdrop.js";
+//World
 Then(
     "the username should be {string}",
     function (this: CustomWorld, expectedUsername: string) {
@@ -13,7 +14,7 @@ Then(
     }
 );
 
-// Login
+//Login
 Then("I should see {string}", async (expectedMessage: string) => {
     await expect(SecurePage.flashAlert).toBeDisplayed();
 
@@ -22,25 +23,17 @@ Then("I should see {string}", async (expectedMessage: string) => {
     );
 });
 
-// Dropdown
-Then("I should confirm option1 is selected", async () => {
-    await expect($("#dropdown")).toHaveValue("1");
-    return Dropdown.confselection();
-});
+//Dropdown
+Then("I should confirm option1 is selected", () => Dropdown.confselection());
 
-// Dynamic Controls
-Then("the checkbox should disappear", async () => {
-    await expect(Dyncon.checkbox).not.toBeDisplayed();
-});
+//Dynamic Controls
+Then("the checkbox should disappear", () => Dyncon.verifyCheckboxDisappeared());
 
-Then("the checkbox should appear", async () => {
-    await expect(Dyncon.checkbox).toBeDisplayed();
-});
+Then("the checkbox should appear", () => Dyncon.verifyCheckboxDisplayed());
 
-Then("the input should be enabled", async () => {
-    await expect(Dyncon.inputField).toBeEnabled();
-});
+Then("the input should be enabled", () => Dyncon.verifyInputEnabled());
 
-Then("the input should be disabled", async () => {
-    await expect(Dyncon.inputField).not.toBeEnabled();
-});
+Then("the input should be disabled", () => Dyncon.verifyInputDisabled());
+
+//drag and drop
+Then("the boxes should be swapped", () => Dragdrop.verifyBoxesSwapped());

@@ -65,7 +65,13 @@ class DynCon extends Page {
       timeout: 10000
     });
   }
+  public async verifyCheckboxDisplayed() {
+    await expect(this.checkbox).toBeDisplayed();
+  }
 
+  public async verifyInputEnabled() {
+    await expect(this.inputField).toBeEnabled();
+  }
 
   public get checkbox() {
     return $("#checkbox");
